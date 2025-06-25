@@ -3,5 +3,8 @@
 		{
 			"path": "../.."
 		}
-	]
+	],
+	"settings": {
+		"julia.environmentPath": "d:\\JOE\\MAIN\\MODELS\\WFLOW\\Wflow.jl"
+	}
 }
