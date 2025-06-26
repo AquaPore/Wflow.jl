@@ -1,4 +1,4 @@
-Path="sbm_config.toml"
+Path="sbm_config_simple.toml"
 
 using Pkg
 cd(raw"D:\JOE\MAIN\MODELS\WFLOW\Wflow.jl\Wflow")

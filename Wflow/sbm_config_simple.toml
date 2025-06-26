@@ -6,7 +6,6 @@
 dir_input = "data/input/Moselle"
 dir_output = "data/output/Moselle"
 
-
 [logging]
 loglevel = "info"
 
@@ -20,18 +19,6 @@ timestepsecs = 86400
 [state]
 path_input = "instates-moselle.nc"
 path_output = "outstates-moselle.nc"
-
-[model]
-kinematic_wave__adaptive_time_step_flag = true
-snow_gravitional_transport__flag = true
-cold_start__flag = true
-reservoir__flag = true
-snow__flag = true
-soil_layer__thickness = [100, 300, 800]
-type = "sbm"
-river_streamorder__min_count = 6
-land_streamorder__min_count = 5
-
 
 # if listed, the variable must be present in the NetCDF or error
 # if not listed, the variable can get a default value if it has one
@@ -130,6 +117,16 @@ netcdf.variable.name = "KsatVer"
 scale = 1.0
 offset = 0.0
 
+[model]
+kinematic_wave__adaptive_time_step_flag = true
+snow_gravitional_transport__flag = true
+cold_start__flag = true
+reservoir__flag = true
+snow__flag = true
+soil_layer__thickness = [100, 300, 800]
+type = "sbm"
+river_streamorder__min_count = 6
+land_streamorder__min_count = 5
 
 [output.netcdf_grid]
 path = "output_moselle.nc"
