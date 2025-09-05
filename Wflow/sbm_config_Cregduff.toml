@@ -5,8 +5,8 @@
 #------------------------------------------------------------------------
 
 # DIRECTORIES
-	dir_input = "data/input/Dunleer"
-	dir_output = "data/output/Dunleer"
+	dir_input = "data/input/Cregduff"
+	dir_output = "data/output/Cregduff"
 	fews_run__flag = false # <true> when coupled with DELTARES
 
 [logging]
@@ -79,8 +79,8 @@
 		river_transport       = "bagnold" #	River flow transport capacity method: [<"bagnold">, <"engelund">, <"yang">, <"kodatie">, <"molinas">
 
 [input]
-	path_forcing = "forcing-Dunleer.nc"
-	path_static = "staticmaps-Dunleer.nc"
+	path_forcing = "forcing-Cregduff.nc"
+	path_static = "staticmaps-Cregduff.nc"
 
    basin__local_drain_direction = "Wflow_Ldd"
    subbasin_location__count     = "Wflow_Subcatchment"
@@ -162,8 +162,8 @@
 # ==== INPUT STATE VARIABLES ====
 # """ initial condition based on past simulations
 # {cold_start__flag = false}
-		path_input  = "instates-Dunleer.nc"
-		path_output = "outstates-Dunleer.nc"
+		path_input  = "instates-Cregduff.nc"
+		path_output = "outstates-Cregduff.nc"
 
 	# if listed, the variable must be present in the NetCDF or error
 	# if not listed, the variable can get a default value if it has one
@@ -200,7 +200,7 @@
 #           OUTPUT
 # =============================
 	[output.netcdf_grid]
-		path = "output_Dunleer.nc"
+		path = "output_Cregduff.nc"
 
 	[output.netcdf_grid.variables]
 
@@ -224,7 +224,7 @@
 			# reservoir_water__volume                    = "storage_reservoir"
 
 	[output.netcdf_scalar]
-		path = "output_scalar_Dunleer.nc"
+		path = "output_scalar_Cregduff.nc"
 
 		[[output.netcdf_scalar.variable]]
 			name = "Q"
@@ -232,8 +232,8 @@
 			parameter = "routing.river_flow.variables.q"
 
 		[[output.netcdf_scalar.variable]]
-         index.x   = 600
-         index.y   = 300
+         index.x   = 400
+         index.y   = 500
 			name = "temp_coord"
 			location = "temp_bycoord"
 			parameter = "atmosphere_air__temperature"
@@ -241,12 +241,12 @@
 		[[output.netcdf_scalar.variable]]
          location  = "temp_byindex"
          name      = "temp_index"
-         index.x   = 600
-         index.y   = 300
+         index.x   = 400
+         index.y   = 500
          parameter = "atmosphere_air__temperature"
 
 	[output.csv]
-		path = "output_Dunleer.csv"
+		path = "output_Cregduff.csv"
 
 		[[output.csv.column]]
          header    = "Q"
