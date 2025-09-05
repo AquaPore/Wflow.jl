@@ -266,6 +266,7 @@ function ncread(
     var, mod = ncvar_name_modifier(var; config = config)
 
     if !isnothing(mod.value)
+
         @info "Set `$(parameter.name)` using uniform value `$(mod.value)` from TOML file."
         if isnothing(dimname)
             # set to one uniform value
@@ -349,7 +350,7 @@ function lens_input_parameter(config::Config, p::AbstractString; optional = true
         return (name = p, lens = nothing)
     else
         error(
-            """Required input static or cyclic model parameter with standard name $p not set 
+            """Required input static or cyclic model parameter with standard name $p not set
             in TOML file (below `[input.static]` or `[input.cyclic]` section)""",
         )
     end
@@ -367,7 +368,7 @@ function lens_input(config::Config, p::AbstractString; optional = true)
         return (name = p, lens = nothing)
     else
         error(
-            """Required input model parameter with standard name $p not set in TOML file 
+            """Required input model parameter with standard name $p not set in TOML file
             (below `[input]` section)""",
         )
     end

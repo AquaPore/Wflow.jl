@@ -15,6 +15,12 @@ function flowgraph(ldd::AbstractVector, indices::AbstractVector, PCR_DIR::Abstra
         add_edge!(graph, from_node, to_node)
     end
     if is_cyclic(graph)
+
+        println("simplecycles:")
+        println( Graphs.simplecycles(graph))
+        println("simplecycles_ter:")
+        println(Graphs.simplecycles_iter(graph))
+
         error("""One or more cycles detected in flow graph.
             The provided local drainage direction map may be unsound.
             Verify that each active flow cell flows towards a pit.
@@ -71,6 +77,15 @@ end
 "Returns water table depth `zi` based on lateral subsurface flow `ssf` and hydraulic conductivity profile `KhExponential`"
 function ssf_water_table_depth(ssf, slope, d, dw, kh_profile::KhExponential, i)
     (; f, kh_0) = kh_profile
+
+    # JP Abs value
+# # zi = log(abs((f[i] * ssf) / (dw * kh_0[i] * slope) + exp(-f[i] * d))) / -f[i]
+# if (f[i] * ssf) / (dw * kh_0[i] * slope) + exp(-f[i] * d) < 0
+#     zi = 0.0
+# else
+#     zi = log((f[i] * ssf) / (dw * kh_0[i] * slope) + exp(-f[i] * d)) / -f[i]
+# end
+
     zi = log((f[i] * ssf) / (dw * kh_0[i] * slope) + exp(-f[i] * d)) / -f[i]
     return zi
 end

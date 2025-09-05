@@ -6,12 +6,13 @@
         ".pixi"
     ],
     "julia.lint.run": true,
-  
+
     "files.associations": {
         "*.qmd": "markdown"
     },
 
     "[markdown]": {
         "rewrap.wordWrapColumn": 92
-    }
+    },
+    "julia.environmentPath": "d:\\JOE\\MAIN\\MODELS\\WFLOW\\Wflow.jl"
 }

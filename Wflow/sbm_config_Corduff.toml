@@ -5,8 +5,8 @@
 #------------------------------------------------------------------------
 
 # DIRECTORIES
-	dir_input = "data/input/Timoleague"
-	dir_output = "data/output/Timoleague"
+	dir_input = "data/input/Corduff"
+	dir_output = "data/output/Corduff"
 	fews_run__flag = false # <true> when coupled with DELTARES
 
 [logging]
@@ -16,8 +16,8 @@
 
 [time]
 	calendar     = "standard" # <julian>; <proleptic_gregorian>; <standard>
-	starttime    = 2010-01-01T02:00:00 # 2000-01-01T00:00:00
-	endtime      = 2010-02-01T01:00:00 # 2000-02-01T00:00:00
+	starttime    = 2010-01-01T00:00:00 # 2000-01-01T00:00:00
+	endtime      = 2010-01-30T00:00:00 # 2000-02-01T00:00:00
 	time_units   = "days since 1900-01-01 00:00:00" # optional information is used by the writer of the model, for model output in netCDF format
 	timestepsecs = 86400 # [seconds] for output files
 
@@ -28,7 +28,7 @@
 
 [model]
    type                                     = "sbm" # <sbm> || <sbm_gwf> || <sediment>
-   cell_length_in_meter__flag               = false # <false> Unit cell length of raster cells in x and y direction in lat/lon degree; <true> in meter
+   cell_length_in_meter__flag               = true # <false> Unit cell length of raster cells in x and y direction in lat/lon degree; <true> in meter
    cold_start__flag                         = true # Cold state does not include values of storage at time=0
    reservoir__flag                          = false # Include reservoir modelling
    snow__flag                               = false # Include snow modelling
@@ -38,6 +38,7 @@
 	# UNSATURATED ZONE
       soil_layer__thickness                    = [100, 300, 800] # [mm] Specific SBM soil model setting: for each soil layer, soil thickness
       soil_infiltration_reduction__flag        = false # Enable reduction factor applied to the soil infiltration capacity
+
       saturated_hydraulic_conductivity_profile = "exponential" # <"exponential_constant">, <"layered">, <"layered_exponential"> Saturated hydraulic conductivity depth profile for SBM soil model (also used for kinematic wave lateral subsurface flow).
 
 	# KINEMATIC WAVE ROUTINE
@@ -78,13 +79,13 @@
 		river_transport       = "bagnold" #	River flow transport capacity method: [<"bagnold">, <"engelund">, <"yang">, <"kodatie">, <"molinas">
 
 [input]
-   path_forcing                 = "forcing-Timoleague.nc"
-   path_static                  = "staticmaps-Timoleague.nc"
+	path_forcing = "forcing-Corduff.nc"
+	path_static = "staticmaps-Corduff.nc"
 
-   basin__local_drain_direction = "wflow_ldd"
-   subbasin_location__count     = "wflow_subcatch"
-   river_location__mask         = "wflow_river"
-   river_gauge__count           = "wflow_gauges_grdc"
+   basin__local_drain_direction = "Wflow_Ldd"
+   subbasin_location__count     = "Wflow_Subcatchment"
+   river_location__mask         = "Wflow_River"
+   river_gauge__count           = "Wflow_Gauges_grdc"
 
 	# == RESERVOIR ==
 	# {reservoir__flag=true}
@@ -116,56 +117,57 @@
       "soil~compacted__area_fraction".value                                       = 0.0 #"PathFrac"
       # "soil~compacted_surface_water__infiltration_capacity"                     = "InfiltCapPath"
       soil__thickness.value                                                       = 1200.0 #"SoilThickness"
-      soil_layer_water__brooks-corey_exponent                                     = "c"
-      # soil_layer_water__brooks-corey_exponent.value                               = 0.5 # "c"
+      soil_layer_water__brooks-corey_exponent.value                               = 10.0 # "c"
       # soil_surface_water__infiltration_reduction_parameter                      = "cf_soil"
-      soil_water__saturated_volume_fraction.value                                 = 0.45 #"theta_s" #"thetaS"
-      soil_water__residual_volume_fraction.value                                        = 0.0 #"theta_r" #"thetaR"
-      soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 1.0 #"f"
+      soil_water__residual_volume_fraction.value                                  = 0.0 #"thetaR"
+      soil_water__saturated_volume_fraction.value                                 = 0.45 #"thetaS"
+
+		soil_layer_water__vertical_saturated_hydraulic_conductivity.value = [0.5, 0.5, 0.5,0.5]
+
+      soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 0.5 #"f"
       # soil_water_sat-zone_bottom__max_leakage_volume_flux                       = "MaxLeakage"
 
 	# == RIVER ==
-		river__length                                                                   = "wflow_riverlength"
-		river__slope                                                                    = "RiverSlope"
-		river__width                                                                    = "wflow_riverwidth"
+		river__length                                                                   = "Wflow_Riverlength"
+		river__slope                                                                    = "Wflow_RiverSlope"
+		river__width                                                                    = "Wflow_Riverwidth"
 		# river_bank_water__depth                                                         = "RiverDepth"
 		# river_bank_water__elevation                                                     = "RiverZ"
 		# river_water_flow__manning_n_parameter                                           = "N_River"
 
 	# == SUBSURFACE FLOW ==
-		land_surface__slope                                                             = "Slope"
+		land_surface__slope                                                             = "Wflow_Slope"
 		# land_surface_water_flow__manning_n_parameter                                    = "N"
    	subsurface_water__horizontal-to-vertical_saturated_hydraulic_conductivity_ratio.value = 100.0 #"KsatHorFrac"
 
 	# == VEGETATION ==
-      vegetation__specific-leaf_storage                                       = 0.06 #"Sl"
-      # "soil_root~wet__sigmoid_function_shape_parameter"                     = "rootdistpar"
-      vegetation_canopy__light-extinction_coefficient                         = 0.7 # "Kext"
-      # vegetation_canopy_water__mean_evaporation-to-mean_precipitation_ratio = "EoverR"
-      vegetation_root__depth.value                                            = 100.0 #"RootingDepth"
-      # vegetation_wood_water__storage_capacity                               = "Swood"
-      # "land~water-covered__area_fraction"                                   = "WaterFrac"
-      # vegetation_water__storage_capacity.value                              = 2.0
-      vegetation_canopy__gap_fraction.value                                   = 0.5
+		vegetation__specific-leaf_storage                                               = 0.06 #"Sl"
+   	# "soil_root~wet__sigmoid_function_shape_parameter"                               = "rootdistpar"
+		vegetation_canopy__light-extinction_coefficient                                 = 0.7 # "Kext"
+		# vegetation_canopy_water__mean_evaporation-to-mean_precipitation_ratio           = "EoverR"
+		vegetation_root__depth.value                                                          = 100.0 #"RootingDepth"
+		# vegetation_wood_water__storage_capacity                                         = "Swood"
+		# "land~water-covered__area_fraction"                                             = "WaterFrac"
+		# vegetation_water__storage_capacity.value = 2.0
+		vegetation_canopy__gap_fraction.value = 0.2
 
 # [input.cyclic]
 # 	vegetation__leaf-area_index = "LAI"
 
 [input.static.soil_surface_water__vertical_saturated_hydraulic_conductivity]
-netcdf.variable.name = "KsatVer"
-scale = 1.0
-offset = 0.0
+	netcdf.variable.name = "KsatVer"
+		scale = 1.0
+		offset = 0.0
 
 # ==== INPUT STATE VARIABLES ====
 # """ initial condition based on past simulations
 # {cold_start__flag = false}
-		path_input  = "instates-moselle.nc"
-		path_output = "outstates-moselle.nc"
+		path_input  = "instates-Corduff.nc"
+		path_output = "outstates-Corduff.nc"
 
 	# if listed, the variable must be present in the NetCDF or error
 	# if not listed, the variable can get a default value if it has one
 	[state.variables]
-
 		# == WATER STORED ON VEGETATION ==
 			vegetation_canopy_water__depth = "canopystorage"
 
@@ -198,9 +200,10 @@ offset = 0.0
 #           OUTPUT
 # =============================
 	[output.netcdf_grid]
-		path = "Output_Timoleague.nc"
+		path = "output_Corduff.nc"
 
 	[output.netcdf_grid.variables]
+
 		land.interception.variables.canopy_storage = "canopystorage"
 		land_surface_water__depth                  = "h_av_land"
 		land_surface_water__volume_flow_rate       = "q_av_land"
@@ -221,29 +224,29 @@ offset = 0.0
 			# reservoir_water__volume                    = "storage_reservoir"
 
 	[output.netcdf_scalar]
-		path = "output_scalar_Timoleague.nc"
+		path = "output_scalar_Corduff.nc"
 
 		[[output.netcdf_scalar.variable]]
 			name = "Q"
 			map = "river_gauge__count"
 			parameter = "routing.river_flow.variables.q"
 
-		# [[output.netcdf_scalar.variable]]
-		# 	coordinate.x = 6.255
-		# 	coordinate.y = 50.012
-		# 	name = "temp_coord"
-		# 	location = "temp_bycoord"
-		# 	parameter = "atmosphere_air__temperature"
+		[[output.netcdf_scalar.variable]]
+         index.x   = 400
+         index.y   = 300
+			name = "temp_coord"
+			location = "temp_bycoord"
+			parameter = "atmosphere_air__temperature"
 
-		# [[output.netcdf_scalar.variable]]
-      #    location  = "temp_byindex"
-      #    name      = "temp_index"
-      #    index.x   = 100
-      #    index.y   = 264
-      #    parameter = "atmosphere_air__temperature"
+		[[output.netcdf_scalar.variable]]
+         location  = "temp_byindex"
+         name      = "temp_index"
+         index.x   = 400
+         index.y   = 300
+         parameter = "atmosphere_air__temperature"
 
 	[output.csv]
-		path = "output_Timoleague.csv"
+		path = "output_Corduff.csv"
 
 		[[output.csv.column]]
          header    = "Q"
@@ -257,22 +260,22 @@ offset = 0.0
 			# 	parameter = "reservoir_water__volume"
 
 		# [[output.csv.column]]
-      #    coordinate.x = 6.255
-      #    coordinate.y = 50.012
+      #    index.x   = 150
+      #    index.y   = 34
       #    header       = "temp_bycoord"
       #    parameter    = "atmosphere_air__temperature"
 
 		# [[output.csv.column]]
-      #    coordinate.x = 6.255
-      #    coordinate.y = 50.012
+      #    index.x   = 150
+      #    index.y   = 34
       #    header       = "vwc_layer2_bycoord"
       #    parameter    = "land.soil.variables.vwc"
       #    layer        = 2
 
 		# [[output.csv.column]]
       #    header    = "temp_byindex"
-      #    index.x   = 100
-      #    index.y   = 264
+      #    index.x   = 150
+      #    index.y   = 34
       #    parameter = "atmosphere_air__temperature"
 
 		[[output.csv.column]]
