@@ -16,8 +16,8 @@
 
 [time]
 	calendar     = "standard" # <julian>; <proleptic_gregorian>; <standard>
-	starttime    = 2010-01-01T00:00:00 # 2000-01-01T00:00:00
-	endtime      = 2010-01-30T00:00:00 # 2000-02-01T00:00:00
+	starttime    = 2010-01-11T00:00:00 # 2000-01-01T00:00:00
+	endtime      = 2024-12-29T00:00:00 # 2000-02-01T00:00:00
 	time_units   = "days since 1900-01-01 00:00:00" # optional information is used by the writer of the model, for model output in netCDF format
 	timestepsecs = 86400 # [seconds] for output files
 
@@ -79,7 +79,7 @@
 		river_transport       = "bagnold" #	River flow transport capacity method: [<"bagnold">, <"engelund">, <"yang">, <"kodatie">, <"molinas">
 
 [input]
-	path_forcing = "forcing-Timoleague.nc"
+	path_forcing = "forcing-Timoleague_*.nc"
 	path_static = "staticmaps-Timoleague.nc"
 
    basin__local_drain_direction = "Wflow_Ldd"
@@ -201,18 +201,18 @@
 # =============================
 	[output.netcdf_grid]
 		path = "output_Timoleague.nc"
+		compressionlevel = 1                # Compression level (default 0)
 
 	[output.netcdf_grid.variables]
-
-		land.interception.variables.canopy_storage = "canopystorage"
-		land_surface_water__depth                  = "h_av_land"
-		land_surface_water__volume_flow_rate       = "q_av_land"
-		river_water__depth                         = "h_av_river"
-		river_water__volume_flow_rate              = "q_av_river"
-		soil_layer_water_unsat-zone__depth         = "ustorelayerdepth"
-		soil_surface__temperature                  = "tsoil"
-		soil_water_sat-zone__depth                 = "satwaterdepth"
-		subsurface_water__volume_flow_rate         = "ssf"
+      land.interception.variables.canopy_storage = "canopystorage"
+      land_surface_water__depth                  = "h_av_land"
+      land_surface_water__volume_flow_rate       = "q_av_land"
+      river_water__depth                         = "h_av_river"
+      river_water__volume_flow_rate              = "q_av_river"
+      soil_layer_water_unsat-zone__depth         = "ustorelayerdepth"
+      soil_surface__temperature                  = "tsoil"
+      soil_water_sat-zone__depth                 = "satwaterdepth"
+      subsurface_water__volume_flow_rate         = "ssf"
 
 		# === SNOW ===
 		# {<snow__flag>=false}
