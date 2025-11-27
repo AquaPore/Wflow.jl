@@ -198,7 +198,6 @@
 	path_output = "outstates-Timoleague.nc"
 
    [state.variables] # -----------------------------
-
       vegetation_canopy_water__depth                     = "canopystorage" # [mm]
 
       soil_water_saturated_zone__depth                   = "satwaterdepth"
@@ -221,6 +220,11 @@
 # [input.cyclic] # ===========================================
 	# vegetation__leaf_area_index = "LAI" # <leaf_area_index>
 
+# .............................................................................................................
+#-------------------------------------------------------------------------------------------------------------
+# .............................................................................................................
+
+# Output of interest
 
 [output.netcdf_grid] # ===========================================
 	path = "Output_Timoleague.nc"
@@ -265,55 +269,52 @@
    # parameter = "atmosphere_air__temperature"
 
    [output.csv] # ===========================================
+   # <maximum>, <minimum>, <mean>, <median>, <sum>, <first>, <last>, <only>
    path = "output_Timoleague.csv"
 
-      [[output.csv.column]]
-      header = "Q"
-      parameter = "river_water__volume_flow_rate"
-      reducer = "maximum"
-
       # [[output.csv.column]]
-      # header = "storage"
-      # index = 1
-      # parameter = "reservoir_water__volume"
-
-      # [[output.csv.column]]
-      # coordinate.x = 6.255
-      # coordinate.y = 50.012
-      # header = "temp_bycoord"
-      # parameter = "atmosphere_air__temperature"
-
-      # [[output.csv.column]]
-      # coordinate.x = 6.255
-      # coordinate.y = 50.012
-      # header = "vwc_layer2_bycoord"
-      # parameter = "land.soil.variables.vwc"
-      # layer = 2
-
-      # [[output.csv.column]]
-      # header = "temp_byindex"
-      # index.x = 100
-      # index.y = 264
-      # parameter = "atmosphere_air__temperature"
-
-      # [[output.csv.column]]
-      # header = "Q"
-      # map = "river_gauge__count"
+      # header    = "Qriver"
       # parameter = "river_water__volume_flow_rate"
+      # reducer   = "mean"
+
+      # [[output.csv.column]]
+      # header    = "Qriver"
+      # parameter = "river_water__volume_flow_rate"
+      # reducer   = "maximum"
 
       [[output.csv.column]]
-      header = "recharge"
-      map = "subbasin_location__count"
-      parameter = "soil_water_saturated_zone_top__net_recharge_volume_flux"
-      reducer = "mean"
+      header    = "QriverGauge"
+      map       = "river_gauge__count"
+      parameter = "river_water__volume_flow_rate"
+      # reducer   = "only"
 
-[API] # ===========================================
-variables = [
-  "river_water__volume_flow_rate",
-  "soil_water_unsaturated_zone__depth",
-  "soil_water__transpiration_volume_flux",
-  "soil_layer_1_water_unsaturated_zone__depth",
-  "soil_layer_2_water_unsaturated_zone__depth",
-  "soil_layer_3_water_unsaturated_zone__depth",
-  "soil_layer_4_water_unsaturated_zone__depth",
-]
+      [[output.csv.column]]
+      header       = "Qriver_XY"
+      coordinate.x = 146700.08
+      coordinate.y = 42147.40
+      parameter    = "river_water__volume_flow_rate"
+      # reducer      = "only"
+
+      [[output.csv.column]]
+      header    = "Qriver_iXiY"
+      index.x   = 224
+      index.y   = 114
+      parameter = "river_water__volume_flow_rate"
+      # reducer   = "only"
+
+      [[output.csv.column]]
+      header    = "ObservationEcologyPoint"
+      map       = "ObservationEcologyPoint"
+      parameter = "river_water__volume_flow_rate"
+      # reducer   = "only"
+
+# [API] # ===========================================
+# variables = [
+#   "river_water__volume_flow_rate",
+#   "soil_water_unsaturated_zone__depth",
+#   "soil_water__transpiration_volume_flux",
+#   "soil_layer_1_water_unsaturated_zone__depth",
+#   "soil_layer_2_water_unsaturated_zone__depth",
+#   "soil_layer_3_water_unsaturated_zone__depth",
+#   "soil_layer_4_water_unsaturated_zone__depth",
+# ]
