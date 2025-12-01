@@ -2,12 +2,25 @@
 using Pkg
 using Base
 
+🎏_Wflow = false
+🎏_Plot = true
+
 @assert Base.VERSION == v"1.11.3"
+@assert Threads.nthreads() == 32
 
-Path="sbm_config_Timoleague.toml"
-# Path="sbm_config_Moselle.toml"
+if 🎏_Wflow
+	Path="sbm_config_Timoleague.toml"
+	# Path="sbm_config_Moselle.toml"
 
-cd(raw"D:\JOE\MAIN\MODELS\WFLOW\Wflow.jl\Wflow")
-# Pkg.activate(".")
-include(raw"src\Wflow.jl")
-Main.Wflow.run(Path)
+	cd(raw"D:\JOE\MAIN\MODELS\WFLOW\Wflow.jl\Wflow")
+	Pkg.activate(".")
+	include(raw"src\Wflow.jl")
+	Main.Wflow.run(Path)
+end
+
+if 🎏_Plot
+	cd(raw"D:\JOE\MAIN\MODELS\WFLOW\Wflow.jl\Wflow")
+	# Pkg.activate(".")
+	include(raw"src\VISUALISATION\Visualisation.jl")
+	visualisation.VISUALISATION()
+end

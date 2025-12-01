@@ -1,0 +1,274 @@
+{
+
+    // Colours theme end Consolas, 'Courier New', monospace
+    "workbench.colorCustomizations": {
+        //EDITOR COLOUR#01011b
+        "editor.background": "#06062b", // "#000000" ; "#00000c" ; "#01011b ";"#06062b"
+        "editor.foreground": "#f1f1f1", // "#f1f1f1" "#ffffffb2" ; "#ffffff"
+
+    // Error code
+
+        // /* error squiggles */
+        // "editorError.foreground": "#dd1515",
+
+        // /* warning squggles */
+        // "editorWarning.foreground": "#ffc400",
+
+        // /* info squiggles */
+        // "editorInfo.foreground": "#35ffab",
+
+
+    // GUIDES
+    "editorIndentGuide.activeBackground1":"#c13030",
+
+    // SELECTING TEXT
+    "editor.selectionBackground": "#2e4f74", //Selecting param
+
+
+    // "editor.lineHighlightBackground": "#130146", // Selecting line
+
+    // SEARCH
+        "input.foreground": "#78d4a5", //Selecting
+        "input.background":"#130731", //Selecting param
+        "inputOption.activeForeground":"#060332", //Selecting param
+        "input.placeholderForeground":"#e3eab2", //Selecting param
+        "inputOption.hoverBackground":"#451a8a", //Selecting param
+        "inputOption.activeBackground":"#adcbd4", //Selecting param
+
+ " inputOption.activeBackground": "#0d0e0c", //Selecting param
+    // "textLink.foreground": "#fa737e",
+    // "textLink.activeForeground": "#49ec3a",
+
+    // TERMINAL BACKGROUND
+    "terminal.background" : "#012456", // "#012456","#6de7a400"
+    "terminal.foreground": "#a9eaec",
+    "terminal.ansiBrightBlue":"#a1da1d",
+
+    // STATUS BAR BACKGROUND
+    "activityBar.background":  "#0b5a8f", //"#1e21d6",
+    "statusBar.background": "#0562a0", //"#0f1197",
+},
+
+// Colours theme start
+"editor.tokenColorCustomizations": {
+
+    "textMateRules": [
+        {
+            "scope": "source.julia punctuation.separator",
+            "settings": {
+                "foreground": "#ec7e24"
+            }
+        } ,
+
+         {
+              "scope": [
+                    "comment",
+                    "string.comment"
+              ],
+              "settings": {
+                    "foreground": "#79b85c", // "#7cb661" #6A9955 #7CA668 #229977
+                    "fontStyle": "italic bold",
+              }
+         },
+
+         {
+              "scope": "constant.numeric",
+              "settings": {
+                    "foreground": "#AE81FF",
+                    "fontStyle": "italic"
+              }
+         },
+    ]
+
+},
+
+"terminal.integrated.commandsToSkipShell": [
+    "language-julia.interrupt"
+],
+"julia.symbolCacheDownload": true,
+"julia.enableTelemetry": true,
+"julia.enableCrashReporter": true,
+"julia.cellDelimiters": [
+
+
+
+
+
+    "^##(?!#)",
+    "^#(\\s?)%%",
+    "^#-"
+],
+"editor.unicodeHighlight.ambiguousCharacters": false,
+
+"julia.execution.inlineResultsForCellEvaluation": true,
+"julia.lint.missingrefs": "all",
+"workbench.preferredDarkColorTheme": "Monokai-Contrast",
+"workbench.preferredHighContrastColorTheme": "Monokai-Contrast",
+"julia.execution.codeInREPL": true,
+"julia.plots.path": "D:\\TEMP\\Plots",
+"editor.fontFamily": "juliamono",
+"editor.codeLensFontFamily": "juliamono",
+"editor.inlayHints.fontFamily": "juliamono",
+"files.autoSave": "afterDelay",
+"workbench.iconTheme": "vscode-great-icons",
+"workbench.editor.tabSizing": "shrink",
+"editor.minimap.enabled": false,
+"editor.insertSpaces": false,
+"editor.wordWrap": "on",
+"editor.wrappingIndent": "indent",
+"editor.guides.bracketPairs": true,
+"terminal.integrated.tabs.defaultColor": "terminal.ansiBlue",
+"julia.additionalArgs": [
+
+
+],
+"evenBetterToml.formatter.indentEntries": true,
+"terminal.integrated.stickyScroll.enabled": true,
+"workbench.editor.pinnedTabSizing": "shrink",
+"workbench.editor.revealIfOpen": true,
+"workbench.editor.pinnedTabsOnSeparateRow": true,
+"workbench.editor.wrapTabs": true,
+"workbench.editor.highlightModifiedTabs": true,
+"julia.NumThreads": 32,
+"diffEditor.hideUnchangedRegions.enabled": true,
+"editor.dropIntoEditor.enabled": false,
+"explorer.confirmDragAndDrop": false,
+"vs-browser.url": "https://www.google.com/",
+"notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "right"
+},
+"notebook.output.wordWrap": true,
+"git.openRepositoryInParentFolders": "always",
+"workbench.colorTheme": "Julia (Monokai Classic)",
+"editor.mouseWheelZoom": true,
+"terminal.integrated.mouseWheelZoom": true,
+"vscode-office.editorTheme": "Dracula",
+"notebook.output.scrolling": true,
+"notebook.editorOptionsCustomizations": {
+    "editor.tabSize": 3,
+    "editor.indentSize": 3,
+    "editor.insertSpaces": true
+},
+"git.confirmSync": false,
+"workbench.editor.enablePreview": false,
+"editor.fontSize": 18,
+"editor.inlayHints.fontSize": 18,
+"editor.suggestFontSize": 18,
+"notebook.markup.fontSize": 18,
+"notebook.output.fontSize": 16,
+"chat.editor.fontSize": 18,
+"markdown.preview.fontSize": 18,
+"notebook.output.fontFamily": "JuliaMono",
+"notebook.insertFinalNewline": true,
+"notebook.showFoldingControls": "always",
+"workbench.editorAssociations": {
+    "*.shp": "default",
+    "{git,gitlens}:/**/*.{md,csv,svg}": "default"
+},
+"window.customTitleBarVisibility": "windowed",
+"editor.inlineSuggest.fontFamily": "JuliaMono",
+"debug.console.fontFamily": "JuliaMono",
+"scm.inputFontFamily": "JuliaMono",
+"terminal.integrated.fontFamily": "monospace",
+"terminal.integrated.fontLigatures.enabled": true,
+"git.autofetch": true,
+"security.workspace.trust.untrustedFiles": "open",
+"julia.debuggerDefaultCompiled": [
+
+
+
+
+    "Base.",
+    "-Base.!",
+    "-Base.|>",
+    "-Base.all",
+    "-Base.all!",
+    "-Base.any",
+    "-Base.any!",
+    "-Base.cd",
+    "-Base.iterate",
+    "-Base.collect",
+    "-Base.collect_similar",
+    "-Base._collect",
+    "-Base.collect_to!",
+    "-Base.collect_to_with_first!",
+    "-Base.filter",
+    "-Base.filter!",
+    "-Base.foreach",
+    "-Base.findall",
+    "-Base.findfirst",
+    "-Base.findlast",
+    "-Base.findnext",
+    "-Base.findprev",
+    "-Base.Generator",
+    "-Base.map",
+    "-Base.map!",
+    "-Base.maximum!",
+    "-Base.minimum!",
+    "-Base.mktemp",
+    "-Base.mktempdir",
+    "-Base.open",
+    "-Base.prod!",
+    "-Base.redirect_stderr",
+    "-Base.redirect_stdin",
+    "-Base.redirect_stdout",
+    "-Base.reenable_sigint",
+    "-Base.setindex!",
+    "-Base.setprecision",
+    "-Base.setrounding",
+    "-Base.show",
+    "-Base.sprint",
+    "-Base.sum",
+    "-Base.sum!",
+    "-Base.task_local_storage",
+    "-Base.timedwait",
+    "-Base.withenv",
+    "-Base.Broadcast",
+    "Core",
+    "Core.Compiler.",
+    "Core.IR",
+    "Core.Intrinsics",
+    "DelimitedFiles",
+    "Distributed",
+    "LinearAlgebra.",
+    "Serialization",
+    "Statistics",
+    "-Statistics.mean",
+    "SparseArrays",
+    "Mmap"
+],
+"editor.tabSize": 3,
+"workbench.editor.autoLockGroups": {
+    "markdownEditor.customEditor": true
+},
+"notebook.consolidatedRunButton": true,
+"notebook.cellFocusIndicator": "border",
+"pythonformat.lint": true,
+"editor.indentSize": "tabSize",
+"evenBetterToml.formatter.indentTables": true,
+"editor.defaultFormatter": "ms-python.autopep8",
+"editor.stickyTabStops": true,
+"notebook.defaultFormatter": "ms-python.autopep8",
+"files.trimTrailingWhitespace": true,
+"evenBetterToml.formatter.arrayTrailingComma": true,
+"terminal.integrated.mouseWheelScrollSensitivity": 3,
+"workbench.list.mouseWheelScrollSensitivity": 3,
+"git.enableSmartCommit": true,
+"notebook.multiCursor.enabled": true,
+"notebook.lineNumbers": "on",
+"application.shellEnvironmentResolutionTimeout": 120,
+"terminal.integrated.fontSize": 16,
+"julia.executablePath": "C:\\Users\\jpollacco.local\\.julia\\juliaup\\julia-1.11.3+0.x64.w64.mingw32\\bin\\julia.exe",
+// "julia.executablePath": "julia +1.11.3"
+// "julia.executablePath": "C:\\Users\\jpollacco.local\\.julia\\juliaup\\julia-1.12.0+0.x64.w64.mingw32\\bin\\julia.exe",
+// "julia.executablePath": "julia +1.12.0",
+
+
+"json.schemas": [
+
+],
+"julia.inlayHints.static.enabled": true,
+"julia.inlayHints.static.parameterNames.enabled": "all",
+"julia.numTestProcesses": 32,
+}

@@ -3,7 +3,7 @@
         "editor.formatOnSave": true
     },
     "julia.environmentPath": "./Wflow",
-    "julia.numTestProcesses": 1,
+    "julia.numTestProcesses": 32,
     "julia.lint.disabledDirs": [
         ".pixi"
     ],
