@@ -226,19 +226,19 @@
 
 # Output of interest
 
-# [output.netcdf_grid] # ===========================================
-# 	path = "Output_Timoleague.nc"
-#    compressionlevel = 0 # Compression level [0-9]
+[output.netcdf_grid] # ===========================================
+	path = "Output_Timoleague.nc"
+   compressionlevel = 0 # Compression level [0-9]
 
-	# [output.netcdf_grid.variables]
-	# 	land.interception.variables.canopy_storage = "canopystorage"
-	# 	land_surface_water__depth                  = "h_land"
-	# 	land_surface_water__volume_flow_rate       = "q_av_land"
-	# 	river_water__depth                         = "h_river"
-	# 	river_water__volume_flow_rate              = "q_av_river"
-	# 	soil_layer_water_unsaturated_zone__depth   = "ustorelayerdepth"
-	# 	soil_water_saturated_zone__depth           = "satwaterdepth"
-	# 	subsurface_water__volume_flow_rate         = "ssf"
+	[output.netcdf_grid.variables]
+		land.interception.variables.canopy_storage = "canopystorage"
+		land_surface_water__depth                  = "h_land"
+		land_surface_water__volume_flow_rate       = "q_av_land"
+		river_water__depth                         = "h_river"
+		river_water__volume_flow_rate              = "q_av_river"
+		soil_layer_water_unsaturated_zone__depth   = "ustorelayerdepth"
+		soil_water_saturated_zone__depth           = "satwaterdepth"
+		subsurface_water__volume_flow_rate         = "ssf"
 
 
 # [output.netcdf_scalar] # ===========================================

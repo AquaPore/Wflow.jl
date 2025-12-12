@@ -1,9 +1,10 @@
 # using Revise
+# Pkg.instantiate()
 using Pkg
 using Base
 
-🎏_Wflow = false
-🎏_Plot = true
+🎏_Wflow = true
+🎏_Plot = false
 
 @assert Base.VERSION == v"1.11.3"
 @assert Threads.nthreads() == 32
@@ -19,7 +20,7 @@ if 🎏_Wflow
 end
 
 if 🎏_Plot
-	cd(raw"D:\JOE\MAIN\MODELS\WFLOW\Wflow.jl\Wflow")
+	cd("D:\\JOE\\MAIN\\MODELS\\WFLOW\\Wflow.jl\\Wflow")
 	# Pkg.activate(".")
 	include(raw"src\VISUALISATION\Visualisation.jl")
 	visualisation.VISUALISATION()
