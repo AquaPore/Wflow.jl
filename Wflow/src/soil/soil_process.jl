@@ -14,7 +14,7 @@ capacity of the soil and paved area can be reduced with the infiltration reducti
 `f_infiltration_reduction`.
 """
 function infiltration(
-    potential_infiltration,
+    potential_infiltration,  
     pathfrac,
     infiltcapsoil,
     infiltcappath,

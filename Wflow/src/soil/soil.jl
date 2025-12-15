@@ -535,7 +535,7 @@ function SbmSoilParameters(
         rootfraction = ncread(
             dataset,
             config,
-            rootfraction_name;
+            "soil_root__length_density_fraction",
             optional = false,
             sel = indices,
             type = Float64,
