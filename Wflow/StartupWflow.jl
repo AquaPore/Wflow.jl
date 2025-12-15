@@ -6,10 +6,11 @@ using Base
 🎏_Wflow = true
 🎏_Plot = false
 
-@assert Base.VERSION == v"1.11.3"
+
 @assert Threads.nthreads() == 32
 
 if 🎏_Wflow
+	@assert Base.VERSION == v"1.11.7"
 	Path="sbm_config_Timoleague.toml"
 	# Path="sbm_config_Moselle.toml"
 

@@ -18,9 +18,9 @@
 # optional, default from forcing netCDF
    calendar     = "standard"  # <julian>; <proleptic_gregorian>; <standard>
    starttime    = 2010-01-11T00:00:00
-   endtime      = 2010-12-29T00:00:00
+   endtime      = 2010-04-29T00:00:00
    time_units   = "days since 1900-01-01 00:00:00" # optional information is used by the writer of the model, for model output in netCDF format
-   timestepsecs = 86400 # [seconds] optional information for writer
+   # timestepsecs = 86400 # [seconds] optional information for writer
 
 
 [model] # ===========================================
@@ -48,7 +48,7 @@
    # land_streamorder__min_count  = 5 # Multi-Threading: Minimum stream order to delineate subbasins for river domain, default is 6 (for multi-threading computing purposes)
    # river_streamorder__min_count = 4 # Multi-Threading: Minimum stream order to delineate subbasins for land domain, default is 5 (for multi-threading computing purposes)
 
-   soil_layer__thickness                    = [100, 300, 800] # <config_soil_layer_thickness> [mm] specific SBM soil model setting: for each soil layer, a thickness is specified
+   soil_layer__thickness                    = [350, 700, 1000] # <config_soil_layer_thickness> [mm] specific SBM soil model setting: for each soil layer, a thickness is specified
    saturated_hydraulic_conductivity_profile = "exponential" # <kh_profile_type>; [char]  |"layered"|, |"exponential"|, |"exponential_constant"|,  |"layered_exponential"| Saturated hydraulic conductivity depth profile for SBM soil model (also used for kinematic wave lateral subsurface flow).
 
    # ~~~~ GROUNDWATER FLOW ~~~~
@@ -134,9 +134,9 @@
 
             # +++ IF  kh_profile_type == exponential +++
                # kv_0[i] * exp(-f[i] * z)
-               soil_surface_water__vertical_saturated_hydraulic_conductivity = "Ks_Top" # [mm Δt⁻¹] <kv_0> Vertical saturated hydraulic conductivity at soil surface
+               # soil_surface_water__vertical_saturated_hydraulic_conductivity = "Ks_Top" # [mm Δt⁻¹] <kv_0> Vertical saturated hydraulic conductivity at soil surface
 
-               soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter = "Ks_ParamReduceDepth" # <f> [mm⁻¹] Scaling parameter controlling decline of vertical saturated hydraulic conductivity kv_0 with depth
+               soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 0.03 #"Ks_ParamReduceDepth" # <f> [mm⁻¹] Scaling parameter controlling decline of vertical saturated hydraulic conductivity kv_0 with depth
 
             # +++  If kh_profile_type == layered_exponential +++
                # kv_0[i] * exp(-f[i] * z)
@@ -148,7 +148,7 @@
          #  ... Compacted soil  ...
             compacted_soil__area_fraction                             = "soil_compacted_fraction" # [0-1] <pathfrac> Fraction of compacted soil area
 
-            compacted_soil_surface_water__infiltration_capacity.value = 10.0 #  <infiltcappath> [mm Δt⁻¹] maximum infiltration capacity of compacted area
+            compacted_soil_surface_water__infiltration_capacity.value = 10.0 #  <infiltcappath> [mm day⁻¹] maximum infiltration capacity of compacted area
 
       # == SBM SATURATED/UNSATUARTED ==
          soil_water_saturated_zone_bottom__max_leakage_volume_flux = "MaxLeakage" # <maxleakage> [mm day⁻¹] Maximum leakage from saturated zone
@@ -173,7 +173,7 @@
       # ~~~~ OVERLAND FLOW ~~~~
          land_surface__slope                          = "Slope" # [m m⁻¹] Land surface slope
          land_surface_water_flow__manning_n_parameter = "land_manning_n" # <mannings_n>
-         subsurface_water__horizontal_to_vertical_saturated_hydraulic_conductivity_ratio.value = 100.0 # <KsatHorFrac> A muliplication factor applied to vertical hydraulic conductivity which is used to calculate the horizontal hydraulic conductivity at the soil surface kh_0
+         subsurface_water__horizontal_to_vertical_saturated_hydraulic_conductivity_ratio.value = 100.0 # <khfrac> A muliplication factor applied to vertical hydraulic conductivity which is used to calculate the horizontal hydraulic conductivity at the soil surface kh_0
 
 
       # == RESERVOIR ==
@@ -188,10 +188,10 @@
          # reservoir_water__rating_curve_type_count = "outflowfunc"
          # reservoir_water__storage_curve_type_count = "storfunc"
 
-# [input.static.soil_surface_water__vertical_saturated_hydraulic_conductivity]
-# 	netcdf_variable_name = "KsatVer"
-# 	scale = 1.0
-# 	offset = 0.0
+[input.static.soil_surface_water__vertical_saturated_hydraulic_conductivity]
+	netcdf_variable_name = "Ks_Top"
+	scale = 1.0
+	offset = 0.0
 
 [state] # ===========================================
 	path_input = "instates-Timoleague.nc"
@@ -283,9 +283,24 @@
       # reducer   = "maximum"
 
       [[output.csv.column]]
-      header    = "QriverGauge"
+      header    = "QriverVolumeFlowRate"
       map       = "river_gauge__count"
       parameter = "river_water__volume_flow_rate"
+
+      [[output.csv.column]]
+      header    = "QriverInstanytaneous"
+      map       = "river_gauge__count"
+      parameter = "river_water__instantaneous_volume_flow_rate"
+
+      [[output.csv.column]]
+      header    = "QriverVolume"
+      map       = "river_gauge__count"
+      parameter = "river_water__volume"
+
+      [[output.csv.column]]
+      header    = "QriverGauge"
+      map       = "river_gauge__count"
+      parameter = "river_water__volume"
       # reducer   = "only"
 
       # [[output.csv.column]]
