@@ -19,7 +19,7 @@ function LandHydrologySBM(dataset::NCDataset, config::Config, domain::DomainLand
 
     atmospheric_forcing = AtmosphericForcing(; n)
     vegetation_parameters = VegetationParameters(dataset, config, indices)
-    if dt >= Hour(23)
+    if dt >= Hour(25)
         interception =
             GashInterceptionModel(dataset, config, indices, vegetation_parameters)
     else

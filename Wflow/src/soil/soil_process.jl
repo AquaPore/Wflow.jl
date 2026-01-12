@@ -14,7 +14,7 @@ capacity of the soil and paved area can be reduced with the infiltration reducti
 `f_infiltration_reduction`.
 """
 function infiltration(
-    potential_infiltration,  
+    potential_infiltration,
     pathfrac,
     infiltcapsoil,
     infiltcappath,
@@ -93,7 +93,7 @@ function head_brooks_corey(vwc, theta_s, theta_r, c, hb)
     par_lambda = 2.0 / (c - 3.0)
     # Note that in the original formula, theta_r is extracted from vwc, but theta_r is not
     # part of the numerical vwc calculation
-    h = hb / (pow(((vwc) / (theta_s - theta_r)), (1.0 / par_lambda)))
+    h = hb / (pow(((max(vwc-theta_r,0.001)) / (theta_s - theta_r)), (1.0 / par_lambda)))
     h = min(h, hb)
     return h
 end

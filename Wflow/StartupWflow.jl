@@ -10,7 +10,7 @@ using Base
 @assert Threads.nthreads() == 32
 
 if 🎏_Wflow
-	@assert Base.VERSION == v"1.11.7"
+	@assert Base.VERSION == v"1.11.8"
 	Path="sbm_config_Timoleague.toml"
 	# Path="sbm_config_Moselle.toml"
 

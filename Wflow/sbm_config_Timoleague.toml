@@ -17,8 +17,8 @@
 [time] # ==============================================
 # optional, default from forcing netCDF
    calendar     = "standard"  # <julian>; <proleptic_gregorian>; <standard>
-   starttime    = 2010-01-11T00:00:00
-   endtime      = 2010-04-29T00:00:00
+   starttime    = 2021-01-01T00:00:00
+   endtime      = 2021-07-01T00:00:00
    time_units   = "days since 1900-01-01 00:00:00" # optional information is used by the writer of the model, for model output in netCDF format
    # timestepsecs = 86400 # [seconds] optional information for writer
 
@@ -270,7 +270,7 @@
 
    [output.csv] # ===========================================
    # <maximum>, <minimum>, <mean>, <median>, <sum>, <first>, <last>, <only>
-   path = "output_Timoleague_Notimestepsecs.csv"
+   path = "output_Timoleague.csv"
 
       # [[output.csv.column]]
       # header    = "Qriver"
@@ -283,25 +283,29 @@
       # reducer   = "maximum"
 
       [[output.csv.column]]
-      header    = "QriverVolumeFlowRate"
+      header    = "QriverWaterVolumeFlowRate"
       map       = "river_gauge__count"
       parameter = "river_water__volume_flow_rate"
 
       [[output.csv.column]]
-      header    = "QriverInstanytaneous"
+      header    = "QriverWaterInstantaneousVolumeFlowRate"
       map       = "river_gauge__count"
       parameter = "river_water__instantaneous_volume_flow_rate"
 
       [[output.csv.column]]
-      header    = "QriverVolume"
+      header    = "QriverWaterVolume"
       map       = "river_gauge__count"
       parameter = "river_water__volume"
 
       [[output.csv.column]]
-      header    = "QriverGauge"
+      header    = "QriverWaterLateralInflowVolumeFlowRate"
       map       = "river_gauge__count"
-      parameter = "river_water__volume"
-      # reducer   = "only"
+      parameter = "river_water__lateral_inflow_volume_flow_rate"
+
+      [[output.csv.column]]
+      header    = "RiverDepth"
+      map       = "river_gauge__count"
+      parameter = "river_water__depth"
 
       # [[output.csv.column]]
       # header       = "Qriver_XY"

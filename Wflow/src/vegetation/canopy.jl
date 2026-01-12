@@ -1,18 +1,43 @@
 abstract type AbstractInterceptionModel end
 
+# "Struct for storing interception model variables"
+# @with_kw struct InterceptionVariables
+#     n::Int
+#     # Canopy potential evaporation [mm Δt⁻¹]
+#     canopy_potevap::Vector{Float64} = fill(MISSING_VALUE, n)
+#     # Interception loss by evaporation [mm Δt⁻¹]
+#     interception_rate::Vector{Float64} = fill(MISSING_VALUE, n)
+#     # Canopy storage [mm]
+#     canopy_storage::Vector{Float64} = zeros(n)
+#     # Stemflow [mm Δt⁻¹]
+#     stemflow::Vector{Float64} = fill(MISSING_VALUE, n)
+#     # Throughfall [mm Δt⁻¹]
+#     throughfall::Vector{Float64} = fill(MISSING_VALUE, n)
+# end
+
 "Struct for storing interception model variables"
 @with_kw struct InterceptionVariables
-    n::Int
     # Canopy potential evaporation [mm Δt⁻¹]
-    canopy_potevap::Vector{Float64} = fill(MISSING_VALUE, n)
+    canopy_potevap::Vector{Float64}
     # Interception loss by evaporation [mm Δt⁻¹]
-    interception_rate::Vector{Float64} = fill(MISSING_VALUE, n)
+    interception_rate::Vector{Float64}
     # Canopy storage [mm]
-    canopy_storage::Vector{Float64} = zeros(n)
+    canopy_storage::Vector{Float64}
     # Stemflow [mm Δt⁻¹]
-    stemflow::Vector{Float64} = fill(MISSING_VALUE, n)
+    stemflow::Vector{Float64}
     # Throughfall [mm Δt⁻¹]
-    throughfall::Vector{Float64} = fill(MISSING_VALUE, n)
+    throughfall::Vector{Float64}
+end
+
+"Initialize interception model variables"
+function InterceptionVariables(n::Int)
+    return InterceptionVariables(;
+        canopy_potevap = fill(MISSING_VALUE, n),
+        interception_rate = fill(MISSING_VALUE, n),
+        canopy_storage = zeros(n),
+        stemflow = fill(MISSING_VALUE, n),
+        throughfall = fill(MISSING_VALUE, n),
+    )
 end
 
 "Struct for storing Gash interception model parameters"

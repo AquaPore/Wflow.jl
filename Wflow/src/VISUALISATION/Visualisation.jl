@@ -8,18 +8,19 @@ module visualisation
 	Joseph A.P. POLLACCO
 """
 
-	function VISUALISATION(;🎏_CatchmentName = "Timoleague", 🎏_GLMakie=false)
+	function VISUALISATION(;🎏_CatchmentName = "Timoleague", 🎏_GLMakie=false, Forcing_ΔT="Daily")
 		# Path of observed forcing data
-			Path_Root_Data  = raw"D:\JOE\MAIN\MODELS\WFLOW\Data"
-			Path_Forcing    = raw"InputTimeSeries\TimeSeries_Process"
+         Path_Root_Data = raw"D:\JOE\MAIN\MODELS\WFLOW\Data"
+         Path_Forcing₀  = raw"InputTimeSeries\TimeSeries_Process"
+         Path_Forcing   = joinpath(Path_Forcing₀, Forcing_ΔT)
 
-			Path_TimeSeries = joinpath(Path_Root_Data, "$(🎏_CatchmentName)", Path_Forcing, "forcing." * "$(🎏_CatchmentName)" * ".csv" )
+			Path_TimeSeries = joinpath(Path_Root_Data, "$(🎏_CatchmentName)", Path_Forcing, "Forcing_" * "$(Forcing_ΔT)" * "_" * "$(🎏_CatchmentName)" * ".csv" )
 			println(Path_TimeSeries)
 			@assert isfile(Path_TimeSeries)
 
 		# Path of Qwflow data
          Path_Root_Wflow = raw"D:\JOE\MAIN\MODELS\WFLOW\Wflow.jl\Wflow\Data\output"
-         Path_Qwflow     = joinpath(Path_Root_Wflow,  "$(🎏_CatchmentName)", "output_" * "$(🎏_CatchmentName)" * "_hourly.csv" )
+         Path_Qwflow     = joinpath(Path_Root_Wflow,  "$(🎏_CatchmentName)", "output_" * "$(🎏_CatchmentName)" * ".csv" )
 			println(Path_Qwflow)
 			@assert isfile(Path_Qwflow)
 
@@ -28,7 +29,7 @@ module visualisation
 		# Reading Wflow data
          DataWflow  = CSV.File(Path_Qwflow; header=true)
          Time_Wflow = convert(Vector, Tables.getcolumn(DataWflow, :time))
-         Qwflow     = convert(Vector{Float64}, Tables.getcolumn(DataWflow, :QriverGauge_1))
+         Qwflow     = convert(Vector{Float64}, Tables.getcolumn(DataWflow, :QriverVolumeFlowRate_1))
 
 			Start_DateTime = Time_Wflow[1]
 			End_DateTime =  Time_Wflow[end]
@@ -76,13 +77,18 @@ module visualisation
 			N  = count(True)
 			Qobs = zeros(Float64, N)
 			for (i, iiRiverDischarge) in enumerate(Qobs₀)
-				Qobs[i] = parse(Float64, iiRiverDischarge)
+
+				if typeof(iiRiverDischarge) ≠ Float64
+					Qobs[i] = parse(Float64, iiRiverDischarge)
+				else
+					Qobs[i] = iiRiverDischarge
+				end
 			end
 
 			TPobs = zeros(Float64, N)
 			for (i, iiTp) in enumerate(Tp₀)
 				if Tp₀[i] > 0.0
-					TPobs[i] =Tp₀[i]
+					TPobs[i] = Tp₀[i]
 				else
 					TPobs[i] = NaN
 				end
@@ -91,7 +97,7 @@ module visualisation
 			println(length(Qobs))
 			println(length(Qwflow))
 
-			# @assert length(Precip) == length(Qwflow)
+			@assert length(Precip) == length(Qwflow)
 
 		# =======================
 			# # Dimensions of figure
@@ -117,30 +123,27 @@ module visualisation
 
 			Axis_2 = Axis(Fig[2,1], ylabel= L"$\Delta Qriver$ $[m^{3}]$", xgridvisible=false, ygridvisible=false, xticklabelrotation = π / 2.0, xticksize=5, yticksize=5, width=800, height=400, ) # yscale = Makie.pseudolog10
 
-				ylims!(Axis_2, low=0.0,high= 3000)
+				# ylims!(Axis_2, low=0.0,high= 3000)
 				X =1:N
-				X_Ticks= 1:30*24:N
+				X_Ticks= 1:30:N
 				Time_Dates = Date.(Time_Forcing[X_Ticks] )
 
 				Axis_2.xticks = (X_Ticks, string.(Time_Dates))
-				band!(Axis_2, X, zeros(length(N)), Qobs*0.64;  color=:blue, label= "Qbaseflow" )
-				band!(Axis_2, X, Qobs*0.64, Qobs*0.68;  color=:red, label= "Qsubsurface" )
-				band!(Axis_2, X, Qobs*0.68, Qobs;  color=:green, label= "Qsubsurface" )
-				# lines!(Axis_2, Time_Forcing, Qobs *0.13, linewidth=2.5, color=:green, label= "Qrunoff" )
-				# lines!(Axis_2, Time_Forcing, Qobs * 0.04, linewidth=2.5, color=:red, label= "Qsubsurface" )
-				# lines!(Axis_2, Time_Forcing, Qobs * 0.83, linewidth=2.5, color=:red, label= "Qbaseflow" )
+				band!(Axis_2, X, zeros(length(N)), Qobs;  color=:blue, label= "Qobs" )
+				# band!(Axis_2, X, zeros(length(N)), Qobs*0.64;  color=:blue, label= "Qbaseflow" )
+				# band!(Axis_2, X, Qobs*0.64, Qobs*0.68;  color=:red, label= "Qsubsurface" )
+				# band!(Axis_2, X, Qobs*0.68, Qobs;  color=:green, label= "Qrunoff" )
 
-				# lines!(Axis_2, X, Qwflow*1000.0, linewidth=2.5, color=:red, label= "Qwflow")
+
+				lines!(Axis_2, X, Qwflow*10000.0, linewidth=2, color=:red, label= "Qwflow_Test")
 
 				# Legend(Fig[3,1], Axis_2, framecolor=(:grey, 0.5), labelsize=8, valign=:top, padding=5, tellheight=true, tellwidt=true, nbanks=2, backgroundcolor=:gray100)
 
-				Axis_2b = Axis(Fig[2,1], ylabel= L"$\Delta Total Phostphates$ $[mg$ $l^{-1}]$", xgridvisible=false, ygridvisible=false, yaxisposition=:right)
+				# Axis_2b = Axis(Fig[2,1], ylabel= L"$\Delta Total Phostphates$ $[mg$ $l^{-1}]$", xgridvisible=false, ygridvisible=false, yaxisposition=:right)
+				# 	hidexdecorations!(Axis_2b, grid=false, ticks=true, ticklabels=true)
+				# 	lines!(Axis_2b, X, TPobs, linewidth=2, color=:violet, linestyle=:dash, label= "TotalP" )
 
-					hidexdecorations!(Axis_2b, grid=false, ticks=true, ticklabels=true)
-
-					lines!(Axis_2b, X, TPobs, linewidth=2, color=:violet, linestyle=:dash, label= "TotalP" )
-
-				Legend(Fig[3,1], Axis_2, framecolor=(:grey, 0.5), labelsize=20, valign=:top, padding=1, tellheight=true, tellwidt=true, nbanks=3, backgroundcolor=:gray100)
+				Legend(Fig[3,1], Axis_2, framecolor=(:grey, 0.5), labelsize=20, valign=:top, padding=1, tellheight=true, tellwidt=true, nbanks=4 , backgroundcolor=:gray100)
 
 				colgap!(Fig.layout, 15)
 				rowgap!(Fig.layout, 15)
