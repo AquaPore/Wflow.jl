@@ -28,16 +28,15 @@ abstract type AbstractInterceptionModel end
     # Throughfall [mm Δt⁻¹]
     throughfall::Vector{Float64}
 end
-#JP
+
 "Initialize interception model variables"
 function InterceptionVariables(n::Int)
-    println("InterceptionVariables")
     return InterceptionVariables(;
         canopy_potevap = fill(MISSING_VALUE, n),
         interception_rate = fill(MISSING_VALUE, n),
         canopy_storage = zeros(n),
         stemflow = fill(MISSING_VALUE, n),
-        throughfall = fill(MISSING_VALUE, n)
+        throughfall = fill(MISSING_VALUE, n),
     )
 end
 
@@ -118,9 +117,9 @@ end
 
 "Initialize Rutter interception model"
 function RutterInterceptionModel(vegetation_parameter_set::VegetationParameters, n::Int)
-    println("RutterInterceptionModel")
-    variables = InterceptionVariables(; n)
-    model = RutterInterceptionModel(; parameters = vegetation_parameter_set, variables)
+    vars = InterceptionVariables(n)
+    model =
+        RutterInterceptionModel(; parameters = vegetation_parameter_set, variables = vars)
     return model
 end
 
