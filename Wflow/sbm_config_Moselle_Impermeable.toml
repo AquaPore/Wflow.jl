@@ -1,0 +1,178 @@
+# This is a TOML configuration file for Wflow.
+# Relative file paths are interpreted as being relative to this TOML file.
+# Wflow documentation https://deltares.github.io/Wflow.jl/dev/
+# TOML documentation: https://github.com/toml-lang/toml
+
+dir_input = "data/input/Moselle"
+dir_output = "data/output/Moselle"
+fews_run__flag = false # <true> when coupled with DELTARES
+
+[logging]
+    loglevel = "info"
+   silent   = false
+   path_log = "Mosselle_Impermable_log.txt"
+
+[time]
+    # calendar = "proleptic_gregorian"
+    endtime = "2000-02-01T00:00:00"
+    starttime = "2000-01-01T00:00:00"
+    # time_units = "days since 1900-01-01 00:00:00"
+    # timestepsecs = 86400
+
+[state]
+    path_input = "instates-moselle.nc"
+    path_output = "outstates-moselle.nc"
+
+[state.variables]
+    vegetation_canopy_water__depth = "canopystorage"
+
+    soil_water_saturated_zone__depth = "satwaterdepth"
+    soil_surface__temperature = "tsoil"
+    soil_layer_water_unsaturated_zone__depth = "ustorelayerdepth"
+
+    # snowpack_dry_snow__leq_depth = "snow"
+    # snowpack_liquid_water__depth = "snowwater"
+
+    river_water__depth = "h_river"
+    river_water__instantaneous_volume_flow_rate = "q_river"
+
+    # reservoir_water_surface__elevation = "waterlevel_reservoir"
+
+    subsurface_water__instantaneous_volume_flow_rate = "ssf"
+
+    land_surface_water__instantaneous_volume_flow_rate = "q_land"
+    land_surface_water__depth = "h_land"
+
+[input]
+    path_forcing = "forcing-moselle.nc"
+    path_static = "staticmaps-moselle.nc"
+
+    basin__local_drain_direction = "wflow_ldd"
+    # reservoir_location__count = "wflow_reservoirlocs"
+    river_gauge__count = "wflow_gauges_grdc"
+    river_location__mask = "wflow_river"
+    subbasin_location__count = "wflow_subcatch"
+
+[input.forcing]
+    atmosphere_water__precipitation_volume_flux = "precip"
+    land_surface_water__potential_evaporation_volume_flux = "pet"
+    atmosphere_air__temperature = "temp"
+
+[input.static]
+    # land_water_covered__area_fraction                                               = "WaterFrac"
+    land_water_covered__area_fraction.value = 0.0 # <water_fraction> open water fraction (excluding rivers) "WaterFrac"
+
+    # soil_layer_water__brooks_corey_exponent                                         = "c"
+        soil_layer_water__brooks_corey_exponent.value                                         = 6.0
+    # soil_surface_water__infiltration_reduction_parameter                            = "cf_soil"
+    # soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter           = "f"
+          soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 0.003 # 0.03"Ks_ParamReduceDepth" # <f> [mm⁻¹] Scaling parameter controlling decline of vertical saturated hydraulic conductivity kv_0 with depth
+        soil_layer_water__vertical_saturated_hydraulic_conductivity.value = [0.00001, 0.000001, 0.0000001, 0.0000001] # [mm Δt⁻¹] Vertical saturated hydraulic conductivity per soil layer, when a layered or layered_exponential saturated hydraulic conductivity profile is used
+
+        soil_layer_water__vertical_saturated_hydraulic_conductivity_factor.value = [1.0, 1.0, 1.0, 1.0]# Multiplication factor applied to vertical turated hydraulic conductivity per soil layer
+    # compacted_soil_surface_water__infiltration_capacity                           = "InfiltCapPath"
+    soil_water__residual_volume_fraction.value                                      = 0.0
+    soil_water__saturated_volume_fraction.value                                     = 0.01
+    # soil_water_saturated_zone_bottom__max_leakage_volume_flux                     = "MaxLeakage"
+    # compacted_soil__area_fraction                                                 = "PathFrac"
+
+    # JP
+    compacted_soil__area_fraction.value                                             = 1.0
+    compacted_soil_surface_water__infiltration_capacity.value                       = 0.000 #  10.0 <infiltcappath> [mm day⁻¹] maximum infiltration capacity of compacted area
+    soil_water_saturated_zone_bottom__max_leakage_volume_flux.value                 = 0.000 #  <maxleakage> [mm day⁻¹] maximum leakage from saturated zone
+
+    # soil_wet_root__sigmoid_function_shape_parameter                                 = "rootdistpar"
+             soil_wet_root__sigmoid_function_shape_parameter.value = -500.0 # <rootdistpar> Controls sharpness of transition between fully wet and fully dry roots
+
+    # soil__thickness                                                                 = "SoilThickness"
+             soil__thickness.value                         = 1500.0 #"SoilThickness" # [mm] <soilthickness>
+
+    # # vegetation_canopy_water__mean_evaporation_to_mean_precipitation_ratio           = "EoverR"
+    vegetation_canopy_water__mean_evaporation_to_mean_precipitation_ratio.value = 0.1 # [-] Gash interception model parameter, if not derived from Lai
+    # vegetation_canopy__light_extinction_coefficient                                 = "Kext"
+        vegetation_canopy__light_extinction_coefficient.value                                 = 0.6
+    # vegetation__specific_leaf_storage                                               = "Sl"
+        vegetation__specific_leaf_storage  .value                                             = 0.1
+    # vegetation_wood_water__storage_capacity                                         = "Swood"
+    vegetation_wood_water__storage_capacity.value                                         = 0.01
+    # vegetation_root__depth                                                          = "RootingDepth"
+        vegetation_root__depth.value                                                          = 100.0
+        vegetation_canopy__gap_fraction.value=0.1
+
+    river__length                                                                   = "wflow_riverlength"
+    # river_water_flow__manning_n_parameter                                           = "N_River"
+    river_water_flow__manning_n_parameter.value = 0.04 # "RiverManning" # Manning’s roughness [s m^1/3] <mannings_n>
+    river__slope                                                                    = "RiverSlope"
+    river__width                                                                    = "wflow_riverwidth"
+
+    # river_bank_water__depth                                                         = "RiverDepth"
+    river_bank_water__depth.value = 3.0
+    # river_bank_water__elevation                                                     = "RiverZ"
+
+    # land_surface_water_flow__manning_n_parameter                                    = "N"
+             land_surface_water_flow__manning_n_parameter.value = 0.27 # "land_manning_n" # <mannings_n>
+    land_surface__slope                                                             = "Slope"
+    land_surface__elevation                                                         = "wflow_dem"
+
+    # subsurface_water__horizontal_to_vertical_saturated_hydraulic_conductivity_ratio = "KsatHorFrac"
+        subsurface_water__horizontal_to_vertical_saturated_hydraulic_conductivity_ratio.value = 1.0
+
+# [input.cyclic]
+#     vegetation__leaf_area_index = "LAI"
+
+[input.static.soil_surface_water__vertical_saturated_hydraulic_conductivity]
+    netcdf_variable_name = "KsatVer"
+    scale = 1.0
+    offset = 0.0
+
+[model]
+   cell_length_in_meter__flag         = false # <false> Unit cell length of raster cells in x and y direction in lat/lon degree; <true> in meter
+    cold_start__flag                         = false
+    glacier__flag                            = false # Include glacier modelling
+    kinematic_wave__adaptive_time_step_flag  = false
+    land_streamorder__min_count              = 5
+    reservoir__flag                          = false
+    river_streamorder__min_count             = 6
+    saturated_hydraulic_conductivity_profile = "exponential" # <kh_profile_type>; [char]  |"layered"|, |"exponential"|, |"exponential_constant"|,  |"layered_exponential"| Saturated hydraulic conductivity depth profile for SBM soil model (also used for kinematic wave lateral subsurface flow).
+    snow__flag                               = false
+    snow_gravitational_transport__flag       = false
+    soil_infiltration_reduction__flag        = false  # <soil_infiltration_reduction> reduction of conductivity due to ice
+    soil_layer__thickness                    = [100, 300, 800]
+    type                                     = "sbm"
+    water_mass_balance__flag                 = false # Compute water balance error
+
+[output.netcdf_grid]
+    path = "output_moselle.nc"
+   compressionlevel = 0 # Compression level [0-9]
+
+[output.netcdf_grid.variables]
+# Forcing data
+         atmosphere_water__precipitation_volume_flux           = "atmosphere_water__precipitation_volume_flux"
+         land_surface_water__potential_evaporation_volume_flux = "land_surface_water__potential_evaporation_volume_flux"
+
+      # Rainfall interception
+         # vegetation_canopy_water__depth                      = "CanopyStorage" # [mm / ΔT]
+         vegetation_canopy_water__interception_volume_flux     = "vegetation_canopy_water__interception_volume_flux" # [mm / ΔT]
+         land_surface__evapotranspiration_volume_flux          = "land_surface__evapotranspiration_volume_flux" # [mm / ΔT]
+         soil_layer_water__volume_fraction                     = "soil_layer_water__volume_fraction" # [%] Soil layer water content as percentage of soil layer thickness
+
+      # Overland flow
+         land_surface_water__volume_flow_rate                  = "land_surface_water__volume_flow_rate" # [m3 / s]
+         land_surface_water__to_river_volume_flow_rate         = "land_surface_water__to_river_volume_flow_rate" # [m3 / s]
+
+         compacted_soil_surface_water__excess_volume_flux      = "compacted_soil_surface_water__excess_volume_flux" # Excess water for compacted soil fraction [mm / DeltaT]
+         soil_surface_water__runoff_volume_flux                = "soil_surface_water__runoff_volume_flux" # Total surface runoff from infiltration and saturation excess [mm / DeltaT]
+
+         soil_water__infiltration_volume_flux                  = "soil_water__infiltration_volume_flux" # Actual infiltration into the unsaturated zone [mm / DeltaT]
+
+      # Subsurface flow
+         subsurface_water__volume_flow_rate                    = "subsurface_water__volume_flow_rate" # [m3 / day]
+
+
+[output.csv]
+path = "output_moselle.csv"
+
+    [[output.csv.column]]
+        header = "Q"
+        parameter = "river_water__volume_flow_rate"
+        reducer = "maximum"
