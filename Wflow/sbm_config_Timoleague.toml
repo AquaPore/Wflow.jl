@@ -22,7 +22,7 @@ fews_run__flag = false # <true> when coupled with DELTARES
    # ~~~~ GENERAL INPUT ~~~~
       type                                    = "sbm" # <sbm> || <sbm_gwf> || <sediment>
       cell_length_in_meter__flag              = true # <false> Unit cell length of raster cells in x and y direction in lat/lon degree; <true> in meter
-      cold_start__flag                        = false # Cold state does not include values of storage at time=0
+      cold_start__flag                        = true # Cold state does not include values of storage at time=0
       glacier__flag                           = false # Include glacier modelling
       reservoir__flag                         = false # Include reservoir modelling
       snow__flag                              = false # Include snow modelling
@@ -203,7 +203,7 @@ fews_run__flag = false # <true> when coupled with DELTARES
    soil_layer_water_unsaturated_zone__depth           = "ustorelayerdepth"
    river_water__depth                                 = "h_river"
    river_water__instantaneous_volume_flow_rate        = "q_river"
-   # subsurface_water__instantaneous_volume_flow_rate   = "ssf"
+   subsurface_water__instantaneous_volume_flow_rate   = "ssf"
    land_surface_water__instantaneous_volume_flow_rate = "q_land"
    land_surface_water__depth                          = "h_land"
    subsurface_water__volume_flow_rate                 = "subsurface_water__volume_flow_rate"
