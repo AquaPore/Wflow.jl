@@ -129,7 +129,7 @@ fews_run__flag = false # <true> when coupled with DELTARES
       # ???--- <kh_profile_type> == exponential ---???
          # kv_0[i] * exp(-f[i] * z)
          # soil_surface_water__vertical_saturated_hydraulic_conductivity               = "Ks_Top" #  100.0 [mm day⁻¹] <kv_0> Vertical saturated hydraulic conductivity at soil surface
-         soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 0.001 #  "Ks_ParamReduceDepth" # <f> [mm⁻¹] Scaling parameter controlling decline of vertical saturated hydraulic conductivity kv_0 with depth
+         soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 0.01 #  "Ks_ParamReduceDepth" # <f> [mm⁻¹] Scaling parameter controlling decline of vertical saturated hydraulic conductivity kv_0 with depth
 
       # ???--- <kh_profile_type> == layered_exponential ---???
          # kv_0[i] * exp(-f[i] * z)
@@ -171,11 +171,11 @@ fews_run__flag = false # <true> when coupled with DELTARES
    # # { [model].type = "sbm_gwf"=true}
       subsurface_water_flow__alpha_coefficient.value = 0.25	# Stability coefficient for internal model time step groundwater flow
 
-      subsurface_surface_water__horizontal_saturated_hydraulic_conductivity.value = 0.0001 # <k> Horizontal conductivity, outing.subsurface_flow.parameters.k [m day-1]
+      subsurface_surface_water__horizontal_saturated_hydraulic_conductivity.value = 0.1 # <k> Horizontal conductivity, outing.subsurface_flow.parameters.k [m day-1]
       subsurface__horizontal_saturated_hydraulic_conductivity_scale_parameter.value = 0.1 # <f> Factor controlling the reduction of horizontal conductivity with depth
       # river_water__exfiltration_conductance.value = 0.001 # <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance> [m d^-1]
-      river_water__exfiltration_conductance.value = 0.001 # <routing.subsurface_flow.boundary_conditions.river.parameters.exfiltration_conductance> [m d-1]
-      river_water__infiltration_conductance.value = 0.001 # <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance>  [m d-1]
+      river_water__exfiltration_conductance.value = 0.1 # <routing.subsurface_flow.boundary_conditions.river.parameters.exfiltration_conductance> [m d-1]
+      river_water__infiltration_conductance.value = 0.0 # <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance>  [m d-1]
 
 
       # ???---  <constanthead__flag> = true ---???
