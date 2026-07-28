@@ -258,14 +258,14 @@ fews_run__flag = false # <true> when coupled with DELTARES
       soil_water__infiltration_volume_flux   = "soil_water__infiltration_volume_flux" # Actual infiltration into the unsaturated zone [mm / DeltaT]
 
    # Overland flow -> rivers
-      land_surface_water__to_river_volume_flow_rate = "land_surface_water__to_river_volume_flow_rate" # [m3 / s] Discharge overland flow that flows to the river
+      land_surface_water__to_river_volume_flow_rate = "land_surface_water__to_river_volume_flow_rate" # [m³ s⁻¹] Discharge overland flow that flows to the river
       # land_surface_water__depth                     = "land_surface_water__depth" # Water depth overland flow [m]
 
    # Subsurface flow -> rivers
-      # subsurface_water__to_river_volume_flow_rate = "subsurface_water__to_river_volume_flow_rate" #  [m3 / day] Part of subsurface flow that flows to the river"
+      # subsurface_water__to_river_volume_flow_rate = "subsurface_water__to_river_volume_flow_rate" #  [m³ day⁻¹] Part of subsurface flow that flows to the river"
 
    # Ground waters -> river and vice versa
-      river_water__to_subsurface_volume_flow_rate = "river_water__to_subsurface_volume_flow_rate" # [m3 / day] Exchange flux (river to aquifer)
+      river_water__to_subsurface_volume_flow_rate = "river_water__to_subsurface_volume_flow_rate" # [m³ day⁻¹] Exchange flux (river to aquifer)
 
 
 # [output.netcdf_scalar] # ==============================================
