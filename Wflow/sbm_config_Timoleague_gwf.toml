@@ -85,7 +85,7 @@ fews_run__flag = false # <true> when coupled with DELTARES
       # soil_surface_water__infiltration_reduction_parameter.value = 0.038 # <cf_soil> [-] Controls soil infiltration reduction factor when soil is frozen
 
    # ~~~~ RAINFALL INTERCEPTION ~~~~
-      # ???--- LAI = true ---???
+      # ???--- LAI = false ---???
          vegetation_canopy__gap_fraction    = "vegetation_canopy_gap_fraction" # <canopygapfraction> [0-1] Canopy gap fraction if not computed from Lai
 
          # ???--- Gash interception model: Δt > 24h ---??
@@ -117,9 +117,9 @@ fews_run__flag = false # <true> when coupled with DELTARES
    #  ~~~~ SBM SOIL ~~~~
       soil__thickness                         = "SoilThickness" # [mm] <soilthickness>
       soil_layer_water__brooks_corey_exponent = "C_BrooksCorey" # [-] <c> Brooks-Corey power coefficient per soil layer
-      soil_water__air_entry_pressure_head     = "Hb_BrooksCorey" # Air entry pressure [cm] of soil (Brooks-Corey)
-      soil_water__residual_volume_fraction    = "ThetaRes" # <theta_r> residual soil moisture
-      soil_water__saturated_volume_fraction.value   = 0.58 #"ThetaSat"  # <theta_s> Saturated soil moisture
+      soil_water__air_entry_pressure_head     = "Hb_BrooksCorey" # [cm] Air entry pressure  of soil (Brooks-Corey)
+      soil_water__residual_volume_fraction    = "ThetaRes" # [m³ m⁻³] <theta_r> Residual soil moisture
+      soil_water__saturated_volume_fraction.value   = 0.58 # [m³ m⁻³] <theta_s> Saturated soil moisture
 
    # ~~~~  Ks model ~~~~
       # ???--- <kh_profile_type> == layered ---???
@@ -129,7 +129,7 @@ fews_run__flag = false # <true> when coupled with DELTARES
       # ???--- <kh_profile_type> == exponential ---???
          # kv_0[i] * exp(-f[i] * z)
          # soil_surface_water__vertical_saturated_hydraulic_conductivity               = "Ks_Top" #  100.0 [mm day⁻¹] <kv_0> Vertical saturated hydraulic conductivity at soil surface
-         soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 0.01 #  "Ks_ParamReduceDepth" # <f> [mm⁻¹] Scaling parameter controlling decline of vertical saturated hydraulic conductivity kv_0 with depth
+         soil_water__vertical_saturated_hydraulic_conductivity_scale_parameter.value = 0.1 #  "Ks_ParamReduceDepth" # <f> [mm⁻¹] Scaling parameter controlling decline of vertical saturated hydraulic conductivity kv_0 with depth
 
       # ???--- <kh_profile_type> == layered_exponential ---???
          # kv_0[i] * exp(-f[i] * z)
@@ -143,7 +143,7 @@ fews_run__flag = false # <true> when coupled with DELTARES
       compacted_soil_surface_water__infiltration_capacity.value = 10.0 #  <infiltcappath> [mm day⁻¹] maximum infiltration capacity of compacted area
 
    #  ~~~~ SATURATED 2 UNSATUARTED ==
-      soil_water_saturated_zone_bottom__max_leakage_volume_flux.value           = 0.0 # "MaxLeakage" # <maxleakage> [mm day⁻¹] Maximum leakage from saturated zone
+      # soil_water_saturated_zone_bottom__max_leakage_volume_flux.value           = 0.0 # "MaxLeakage" # <maxleakage> [mm day⁻¹] Maximum leakage from saturated zone
       soil_wet_root__sigmoid_function_shape_parameter.value                     = -500.0 # <rootdistpar> Controls sharpness of transition between fully wet and fully dry roots
       soil_water_saturated_zone_top__capillary_rise_max_water_table_depth.value = 2000.0 # [mm] <cap_hmax> Maximum water table depth for capillary rise
       soil_water_saturated_zone_top__capillary_rise_averianov_exponent.value    = 2.0 # Averianov exponent controlling capillary rise
@@ -165,17 +165,17 @@ fews_run__flag = false # <true> when coupled with DELTARES
    # ~~~~ OVERLAND FLOW ~~~~
       land_surface__slope                                                                   = "Slope" # [m m⁻¹] Land surface slope
       land_surface_water_flow__manning_n_parameter                                          = "land_manning_n" # 0.27  # <mannings_n>
-      subsurface_water__horizontal_to_vertical_saturated_hydraulic_conductivity_ratio.value = 3.0 # <khfrac> A muliplication factor applied to vertical hydraulic conductivity which is used to calculate the horizontal hydraulic conductivity at the soil surface kh_0
+      subsurface_water__horizontal_to_vertical_saturated_hydraulic_conductivity_ratio.value = 2.0 # <khfrac> A muliplication factor applied to vertical hydraulic conductivity which is used to calculate the horizontal hydraulic conductivity at the soil surface kh_0
 
    # # ~~~~ GROUNDWATER FLOW ~~~~
    # # { [model].type = "sbm_gwf"=true}
       subsurface_water_flow__alpha_coefficient.value = 0.25	# Stability coefficient for internal model time step groundwater flow
 
-      subsurface_surface_water__horizontal_saturated_hydraulic_conductivity.value = 0.1 # <k> Horizontal conductivity, outing.subsurface_flow.parameters.k [m day-1]
-      subsurface__horizontal_saturated_hydraulic_conductivity_scale_parameter.value = 0.1 # <f> Factor controlling the reduction of horizontal conductivity with depth
+      subsurface_surface_water__horizontal_saturated_hydraulic_conductivity.value = 1.0 # <k> Horizontal conductivity, outing.subsurface_flow.parameters.k [m day-1]
+      subsurface__horizontal_saturated_hydraulic_conductivity_scale_parameter.value = 1.0 # <f> Factor controlling the reduction of horizontal conductivity with depth
       # river_water__exfiltration_conductance.value = 0.001 # <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance> [m d^-1]
-      river_water__exfiltration_conductance.value = 0.1 # <routing.subsurface_flow.boundary_conditions.river.parameters.exfiltration_conductance> [m d-1]
-      river_water__infiltration_conductance.value = 0.0 # <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance>  [m d-1]
+      river_water__exfiltration_conductance.value = 0.0 # [m2 d-1] saturated hydraulic conductivity from aquifer to river <routing.subsurface_flow.boundary_conditions.river.parameters.exfiltration_conductance> [m d-1]
+      river_water__infiltration_conductance.value = 10.0 # [m2 d-1] saturated hydraulic conductivity from river to aquifer  <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance>
 
 
       # ???---  <constanthead__flag> = true ---???
