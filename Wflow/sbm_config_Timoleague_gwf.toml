@@ -32,7 +32,7 @@ fews_run__flag = false # <true> when coupled with DELTARES
       water_mass_balance__flag                = false # Compute water balance error
       river_routing                           = "kinematic_wave"    # optional,  <"local_inertial">  default is <"kinematic_wave">
       land_routing                            = "kinematic_wave"    # optional,  <"local_inertial">  default is <"kinematic_wave">
-      kinematic_wave__adaptive_time_step_flag = false # Enable kinematic wave adaptive (internal) timestepping in the model
+
       floodplain_1d__flag                     = false # optional, default is false
       pit__flag                               = false # Include pits for kinematic wave flow continuous at subbasin only (upstream of provided pit locations)
       land_streamorder__min_count             = 5 # Multi-Threading: Minimum stream order to delineate subbasins for river domain, default is 6 (for multi-threading computing purposes)
@@ -41,9 +41,11 @@ fews_run__flag = false # <true> when coupled with DELTARES
 
       saturated_hydraulic_conductivity_profile = "exponential" # <kh_profile_type>;  |"layered"|, |"exponential"|, |"exponential_constant"|,  |"layered_exponential"| Saturated hydraulic conductivity depth profile for SBM soil model (also used for kinematic wave lateral subsurface flow).
 
+      kinematic_wave__adaptive_time_step_flag = false # Enable kinematic wave adaptive (internal) timestepping in the model
+
       # ???--- IF <kinematic_wave__adaptive_time_step_flag> == false ---???
-         river_kinematic_wave__time_step                = 900        # Fixed internal timestep for river flow (river cells) optional, default is 900
-         land_kinematic_wave__time_step                 = 3600        # Fixed internal timestep for overland flow (land cells) optional, default 3600
+         river_kinematic_wave__time_step = 900 # [seconds] Fixed internal timestep for river flow (river cells) optional, default is 900
+         land_kinematic_wave__time_step = 3600 # [seconds] Fixed internal timestep for overland flow (land cells) optional, default 3600
 
       # ???--- IF type=<sbm_gwf> ---???
          constanthead__flag  = false #  Include constant head boundary condition, Dirichlet boundary condition default is "false"
@@ -165,6 +167,8 @@ fews_run__flag = false # <true> when coupled with DELTARES
    # ~~~~ OVERLAND FLOW ~~~~
       land_surface__slope                                                                   = "Slope" # [m m⁻¹] Land surface slope
       land_surface_water_flow__manning_n_parameter                                          = "land_manning_n" # 0.27  # <mannings_n>
+
+   # ~~~~ SUBSURFACE FLOW ~~~~
       subsurface_water__horizontal_to_vertical_saturated_hydraulic_conductivity_ratio.value = 2.0 # <khfrac> A muliplication factor applied to vertical hydraulic conductivity which is used to calculate the horizontal hydraulic conductivity at the soil surface kh_0
 
    # # ~~~~ GROUNDWATER FLOW ~~~~
@@ -174,8 +178,9 @@ fews_run__flag = false # <true> when coupled with DELTARES
       subsurface_surface_water__horizontal_saturated_hydraulic_conductivity.value = 1.0 # <k> Horizontal conductivity, outing.subsurface_flow.parameters.k [m day-1]
       subsurface__horizontal_saturated_hydraulic_conductivity_scale_parameter.value = 1.0 # <f> Factor controlling the reduction of horizontal conductivity with depth
       # river_water__exfiltration_conductance.value = 0.001 # <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance> [m d^-1]
-      river_water__exfiltration_conductance.value = 0.0 # [m2 d-1] saturated hydraulic conductivity from aquifer to river <routing.subsurface_flow.boundary_conditions.river.parameters.exfiltration_conductance> [m d-1]
-      river_water__infiltration_conductance.value = 10.0 # [m2 d-1] saturated hydraulic conductivity from river to aquifer  <routing.subsurface_flow.boundary_conditions.river.parameters.infiltration_conductance>
+      river_water__exfiltration_conductance.value = 0.0 # [m2 d-1] <exfiltration_conductance> saturated hydraulic conductivity from aquifer to river
+
+      river_water__infiltration_conductance.value = 10.0 # [m2 d-1] <infiltration_conductance> saturated hydraulic conductivity from river to aquifer
 
 
       # ???---  <constanthead__flag> = true ---???
