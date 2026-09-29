@@ -32,9 +32,9 @@
     @test config.dir_input != "."
     @test config.dir_output != "."
     @test Wflow.input_path(config, config.state.path_input) ==
-          joinpath(@__DIR__, "data", "input", "instates-moselle.nc")
+        joinpath(@__DIR__, "data", "input", "instates-moselle.nc")
     @test Wflow.output_path(config, config.state.path_output) ==
-          joinpath(@__DIR__, "data", "output", "outstates-moselle.nc")
+        joinpath(@__DIR__, "data", "output", "outstates-moselle.nc")
 
     # test error is thrown for wrong non-optional model parameter
     @test_throws ErrorException Wflow.get_var(config, "not_set_in_TOML"; optional = false)
@@ -54,7 +54,7 @@ end
     # mock a NCReader object
     ncpath = Wflow.input_path(config, config.input.path_forcing)
     ds = NCDataset(ncpath)
-    reader = (; dataset = ds)
+    reader = (; dataset_times = ds["time"][:])
 
     clock = Wflow.Clock(config, reader)
 
@@ -164,7 +164,7 @@ end
     @test eltype(reader.dataset_times) == DateTimeNoLeap
     @test ismissing(reader.dataset_times) == false # missing in time dimension is not allowed
     @test reader.dataset_times ==
-          collect(DateTimeNoLeap(2000, 1, 2):Day(1):DateTimeNoLeap(2000, 1, 6))
+        collect(DateTimeNoLeap(2000, 1, 2):Day(1):DateTimeNoLeap(2000, 1, 6))
 
     # test Clock{DateTimeNoLeap}
     clock = Wflow.Clock(config, reader)
@@ -178,17 +178,70 @@ end
     @test clock.time == DateTimeNoLeap(2000, 3, 1)
 end
 
+@testitem "unit: RollingDataset" begin
+    using NCDatasets: NCDataset
+
+    tomlpath = joinpath(@__DIR__, "sbm_config.toml")
+    config = Wflow.Config(tomlpath)
+    forcing_path = Wflow.input_path(config, config.input.path_forcing)
+
+    # write the first timesteps of the forcing both as a single file and split over three
+    # files, naming the parts in reverse, such that sorting them by name is chronologically
+    # wrong
+    chunks = [1:3, 4:6, 7:9]
+    n_time = last(last(chunks))
+    tmpdir = mktempdir()
+    single_path = joinpath(tmpdir, "forcing-single.nc")
+    part_paths = [joinpath(tmpdir, "forcing-part$i.nc") for i in reverse(eachindex(chunks))]
+    NCDataset(forcing_path) do ds
+        write(single_path, view(ds; time = 1:n_time))
+        for (chunk, part_path) in zip(chunks, part_paths)
+            write(part_path, view(ds; time = chunk))
+        end
+    end
+
+    single = NCDataset(single_path)
+    rolling, times = Wflow.RollingDataset(sort(part_paths))
+
+    @test rolling.paths == part_paths
+    @test rolling.file_end_indices == [3, 6, 9]
+    @test times == single["time"][:]
+    @test Wflow.read_x_axis(rolling) == Wflow.read_x_axis(single)
+    @test Wflow.read_y_axis(rolling) == Wflow.read_y_axis(single)
+
+    par = "atmosphere_water__precipitation_volume_flux"
+    var = config.input.forcing[par]
+    metadata = Wflow.get_metadata(par, Wflow.LandHydrologySBM)
+    dt = 86400.0
+
+    # reading forwards and then backwards crosses every file boundary in both directions
+    for i in [1:n_time; n_time:-1:1]
+        @test isequal(
+            Wflow.get_at(rolling, var, metadata, i, dt),
+            Wflow.get_at(single, var, metadata, i, dt),
+        )
+    end
+    @test isequal(
+        Wflow.get_at(rolling, var, metadata, times, first(times), dt),
+        Wflow.get_at(single, var, metadata, 1, dt),
+    )
+    @test_throws BoundsError Wflow.dataset_index!(rolling, n_time + 1)
+
+    close(rolling)
+    close(single)
+end
+
 @testitem "unit: CFTime" begin
     using CFTime: DateTimeStandard, DateTimeProlepticGregorian, DateTime360Day
     using Dates: DateTime, Date
     @test Wflow.cftime("2006-01-02T15:04:05", "standard") ==
-          DateTimeStandard(2006, 1, 2, 15, 4, 5)
+        DateTimeStandard(2006, 1, 2, 15, 4, 5)
     @test Wflow.cftime("2006-01-02", "proleptic_gregorian") ==
-          DateTimeProlepticGregorian(2006, 1, 2)
+        DateTimeProlepticGregorian(2006, 1, 2)
     @test Wflow.cftime("2006-01-02T15:04:05", "360_day") ==
-          DateTime360Day(2006, 1, 2, 15, 4, 5)
+        DateTime360Day(2006, 1, 2, 15, 4, 5)
     @test Wflow.cftime(DateTime("2006-01-02T15:04:05"), "360_day") ==
-          DateTime360Day(2006, 1, 2, 15, 4, 5)
+        DateTime360Day(2006, 1, 2, 15, 4, 5)
     @test Wflow.cftime(Date("2006-01-02"), "360_day") == DateTime360Day(2006, 1, 2)
 end
 
@@ -199,7 +252,7 @@ end
     @test_throws ErrorException Wflow.timecycles(collect(1:400))
     @test Wflow.timecycles(collect(1:12)) == collect(zip(1:12, fill(1, 12)))
     @test Wflow.timecycles(collect(1:366)) ==
-          monthday.(Date(2000, 1, 1):Day(1):Date(2000, 12, 31))
+        monthday.(Date(2000, 1, 1):Day(1):Date(2000, 12, 31))
 
     @test Wflow.monthday_passed((1, 1), (1, 1))  # same day
     @test Wflow.monthday_passed((1, 2), (1, 1))  # day later
@@ -376,7 +429,7 @@ end
             "atmosphere_water__precipitation_volume_flux",
             49951,
             2.5578704145219592e-8;
-            rtol = 1e-7,
+            rtol = 1.0e-7,
         )
         test_initial_parameter_value(
             "soil_layer_water__brooks_corey_exponent",
@@ -414,7 +467,7 @@ end
         @test isapprox(
             land.atmospheric_forcing.precipitation[49951],
             3.8368056217829386e-8,
-            rtol = 1e-7,
+            rtol = 1.0e-7,
         )
         @test land.soil.parameters.brooks_corey_exponent[1] ≈ [
             2.0 * 9.152995289601465,
@@ -466,7 +519,7 @@ end
 
             @test Wflow.dim_directions(ds, (:x, :y)) === (x = true, y = false)
             @test Wflow.dim_directions(ds, (:y, :x, :layer)) ===
-                  (y = false, x = true, layer = true)
+                (y = false, x = true, layer = true)
 
             data, dims = Wflow.permute_data(zeros(1, 2, 3), (:layer, :y, :x))
             @test size(data) == (3, 2, 1)

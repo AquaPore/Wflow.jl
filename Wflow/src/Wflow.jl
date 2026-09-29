@@ -58,7 +58,8 @@ using LoggingExtras:
     TeeLogger,
     Warn,
     with_logger
-using NCDatasets: NCDatasets, NCDataset, dimnames, dimsize, nomissing, defDim, defVar, path
+using NCDatasets:
+    NCDatasets, NCDataset, CFVariable, dimnames, dimsize, nomissing, defDim, defVar, path
 using OrderedCollections: OrderedDict
 using Parameters: @with_kw
 using Polyester: @batch
@@ -69,12 +70,12 @@ using Statistics: mean, median, quantile!
 using TerminalLoggers: TerminalLogger
 using TOML: TOML
 
-const CFDataset = Union{NCDataset, NCDatasets.MFDataset}
-const CFVariable_MF = Union{NCDatasets.CFVariable, NCDatasets.MFCFVariable}
 const VERSION =
     VersionNumber(TOML.parsefile(joinpath(@__DIR__, "..", "Project.toml"))["version"])
 
 const GRAVITATIONAL_ACCELERATION = 9.80665 # m s⁻²
+const WATER_DENSITY = 1.0e3 # [kg m⁻³]
+const WATER_KINEMATIC_VISCOSITY = 1.16e-6 # [m² s⁻¹]
 # local drain direction pit [-]
 const LDD_PIT = 5
 
@@ -93,7 +94,7 @@ function Clock(config)
 end
 
 function Clock(config, reader)
-    nctimes = reader.dataset["time"][:]
+    nctimes = reader.dataset_times
 
     # if the timestep is not given, use the difference between netCDF time 1 and 2
     if isnothing(config.time.timestepsecs)
@@ -147,12 +148,12 @@ Composite type that represents all different aspects of a Wflow Model, such as t
 parameters, clock, configuration and input and output.
 """
 struct Model{
-    R <: Routing,
-    L <: AbstractLandModel,
-    M <: AbstractMassBalance,
-    W <: Writer,
-    T <: AbstractModelType,
-} <: AbstractModel{T}
+        R <: Routing,
+        L <: AbstractLandModel,
+        M <: AbstractMassBalance,
+        W <: Writer,
+        T <: AbstractModelType,
+    } <: AbstractModel{T}
     config::Config                  # all configuration options
     domain::Domain                  # domain connectivity (network) and shared parameters
     routing::R                      # routing model (horizontal fluxes), moves along network
@@ -256,7 +257,7 @@ include("states.jl")
 include("mass_balance.jl")
 
 """
-    run(tomlpath::AbstractString; silent=false)
+    run(tomlpath::AbstractString; silent = false)
     run(config::Config)
     run!(model::Model)
     run()
